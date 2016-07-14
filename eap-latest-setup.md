@@ -954,6 +954,14 @@ Since we have taken the time to create the *joe* user as well as a project for
 him, we can log into a terminal as *joe* and then set up the command line
 tooling.
 
+
+**Warning: possible bug** - As of the Atomic 3.2 release line the
+**master** CA cert file (`/etc/origin/master/ca.crt`) may *not be
+readable* by non root users, as the parent directory is installed
+with `0700` permission. You may need to run `chmod +rx
+/etc/origin/master/` (or copy the cert elsewhere) to enable `joe` to
+login successfully.
+
 Open a terminal as `joe`:
 
     # su - joe
