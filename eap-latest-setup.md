@@ -760,8 +760,10 @@ will create user accounts for two non-privileged users of AE, *joe* and
     useradd joe
     useradd alice
 
-To start, we will need the `htpasswd` binary, which is made available by
-installing:
+To start, we will need the `htpasswd` binary. Including an
+`htpasswd_auth` provider in the `openshift_master_identity_providers`
+parameter in your inventory file will install this binary by default
+(more notes below). If you need to install it manually:
 
     yum -y install httpd-tools
 
@@ -787,6 +789,19 @@ the `oauthConfig`'s `identityProviders` stanza so that it looks like the followi
 More information on these configuration settings (and other identity providers) can be found here:
 
     http://docs.openshift.org/latest/admin_guide/configuring_authentication.html#HTPasswdPasswordIdentityProvider
+
+
+Configuring `htpasswd_auth` would have been handled automatically for
+*joe* and *alice* if we had added values like the following to the
+`[OSEv3:vars]` section of our inventory file:
+
+
+    [OSEv3:vars]
+
+    openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/origin/master/htpasswd'}]
+    openshift_master_htpasswd_users={'joe': '$apr1$TbzjxAFi$P7zyfMd6CrVxZweYlJIYh0', 'alice': '$apr1$V3BkGf/h$sgY5w9aJ6mHDHozSnwGL9.'}
+
+Which effectively handles running the steps described above for you.
 
 ### A Project for Everything
 Atomic Enterprise (AE) has a concept of "projects" to contain a number of
