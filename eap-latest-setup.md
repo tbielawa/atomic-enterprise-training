@@ -386,7 +386,7 @@ For now do not worry much about the information after
     -----------------------------------------------------------------------------------------------------------------
     NAME                    STATUS    AGE      LABELS
     ae-master.example.com   Ready     1h       kubernetes.io/hostname=ae-master.example.com,region=infra,zone=default
-    ae-node1.example.com    Ready     1h       kubernetes.io/hostname=ae-node2.example.com,region=primary,zone=east
+    ae-node1.example.com    Ready     1h       kubernetes.io/hostname=ae-node1.example.com,region=primary,zone=east
     ae-node2.example.com    Ready     1h       kubernetes.io/hostname=ae-node2.example.com,region=primary,zone=west
     -----------------------------------------------------------------------------------------------------------------
     ```
@@ -704,11 +704,15 @@ possibilities are endless!
 The assignments of "regions" and "zones" at the node-level are handled by labels
 on the nodes. You can look at how the labels were implemented by doing:
 
-    oc get nodes
-    NAME                    LABELS                                                                   STATUS
-    ae-master.example.com   kubernetes.io/hostname=ae-master.example.com,region=infra,zone=default   Ready
-    ae-node1.example.com    kubernetes.io/hostname=ae-node1.example.com,region=primary,zone=east     Ready
-    ae-node2.example.com    kubernetes.io/hostname=ae-node2.example.com,region=primary,zone=west     Ready
+
+    # oc get nodes
+    -----------------------------------------------------------------------------------------------------------------
+    NAME                    STATUS    AGE      LABELS
+    ae-master.example.com   Ready     1h       kubernetes.io/hostname=ae-master.example.com,region=infra,zone=default
+    ae-node1.example.com    Ready     1h       kubernetes.io/hostname=ae-node1.example.com,region=primary,zone=east
+    ae-node2.example.com    Ready     1h       kubernetes.io/hostname=ae-node2.example.com,region=primary,zone=west
+    -----------------------------------------------------------------------------------------------------------------
+
 
 At this point we have a running AE environment across three hosts, with
 one master and three nodes, divided up into two regions -- "*infra*structure"
