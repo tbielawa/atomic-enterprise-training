@@ -365,32 +365,19 @@ For now do not worry much about the information after
 
 1. Run oc get nodes (your cluster should be running!)
     ```
-    oc get nodes
+    oc get nodes --show-labels
     ```
 
     You should see something like:
     ```
-    -----------------------------------------------------------------------------
-    NAME                    LABELS                                         STATUS
-    ae-master.example.com   kubernetes.io/hostname=ae-master.example.com   Ready
-    ae-node1.example.com    kubernetes.io/hostname=ae-node1.example.com    Ready
-    ae-node2.example.com    kubernetes.io/hostname=ae-node2.example.com    Ready
-    -----------------------------------------------------------------------------
+    -----------------------------------------------------------------------------------------------------------------
+    NAME                    STATUS    AGE      LABELS
+    ae-master.example.com   Ready     1h       kubernetes.io/hostname=ae-master.example.com,region=infra,zone=default
+    ae-node1.example.com    Ready     1h       kubernetes.io/hostname=ae-node2.example.com,region=primary,zone=east
+    ae-node2.example.com    Ready     1h       kubernetes.io/hostname=ae-node2.example.com,region=primary,zone=west
+    -----------------------------------------------------------------------------------------------------------------
     ```
 
-<!--
-[//]: # (TODO: remove this once the issue is resolved and update above `get nodes` output)
-
-1. There's a [bug](https://github.com/openshift/openshift-ansible/issues/305)
-   in current ansible installer preventing labels to be set. For now, let's set
-   them manually:
-    ```
-    oc label nodes ae-master.example.com region=infra zone=default
-    oc label nodes ae-node1.example.com  region=primary zone=east
-    oc label nodes ae-node2.example.com  region=primary zone=west
-    ```
-    You should see them assigned in the output of the next `oc get nodes`.
--->
 
 ## Launch your very first pod
 
@@ -1074,7 +1061,7 @@ several other `ose-pod` containers.
 
 ```
 # docker ps
-abd9061cf2fd        atomicenterprise/hello-atomic   "/hello-atomic"     19 minutes ago      Up 19 minutes                           k8s_hello-atomic.65804d4d_hello-atomic_demo_71c467dc-4db3-11e5-a843-fa163e472414_96731d91   
+abd9061cf2fd        atomicenterprise/hello-atomic   "/hello-atomic"     19 minutes ago      Up 19 minutes                           k8s_hello-atomic.65804d4d_hello-atomic_demo_71c467dc-4db3-11e5-a843-fa163e472414_96731d91
 e8af42b67175        aos3/aos-pod:v3.0.1.100         "/pod"              19 minutes ago      Up 19 minutes                           k8s_POD.2d6df2fa_hello-atomic_demo_71c467dc-4db3-11e5-a843-fa163e472414_b47f195f
 ```
 
@@ -1140,7 +1127,7 @@ If you think back to the simple pod we created earlier, there was a "label":
 Now, let's look at a *service* definition:
 
 ```
-$ cat hello-service.json	
+$ cat hello-service.json
 {
     "kind": "Service",
     "apiVersion": "v1",
@@ -1347,7 +1334,7 @@ admins.
 
 Ensure that port 1936 is accessible and visit:
 
-    http://admin:cEVu2hUb@ae-master.example.com:1936 
+    http://admin:cEVu2hUb@ae-master.example.com:1936
 
 to view your router stats.
 
@@ -1756,7 +1743,7 @@ wildcard space:
     ;; ANSWER SECTION:
     foo.cloudapps.example.com 0 IN A 192.168.133.2
     ...
-    
+
 [//]: # (TODO: LDAP basic auth service requires STI - find a way around it)
 
 # APPENDIX - Import/Export of Docker Images (Disconnected Use)
@@ -2051,19 +2038,19 @@ configure the entire AWS environment, too.
     [OSEv3:children]
     masters
     nodes
-    
+
     [OSEv3:vars]
     deployment_type=enterprise
-    
+
     # The default user for the image used
     ansible_ssh_user=ec2-user
-    
+
     # host group for masters
     # The entries should be either the publicly accessible dns name for the host
     # or the publicly accessible IP address of the host.
     [masters]
     ec2-52-6-179-239.compute-1.amazonaws.com
-    
+
     # host group for nodes
     [nodes]
     ec2-52-6-179-239.compute-1.amazonaws.com openshift_node_labels="{'region': 'infra', 'zone': 'default'}" #The master
@@ -2214,4 +2201,3 @@ The CA is created on your master in `/var/lib/openshift/openshift.local.certific
 On Mac OSX and Linux you will need to make the file executable
 
    chmod +x oc
-
