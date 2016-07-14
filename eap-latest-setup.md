@@ -347,8 +347,15 @@ them according to your DNS environment.
     ae-node2.example.com openshift_node_labels="{'region': 'primary', 'zone': 'west'}"
 ```
 
+**Users in AWS** may wish (need) to add and set the
+`openshift_hostname` and `openshift_public_hostname` variables to the
+instances Public DNS names from Amazon for each host in the `[nodes]`
+section.
+
+
 For now do not worry much about the information after
 `openshift_node_labels=`. But do not omit it entirely.
+
 
 ### Run the installer (on the master)
 
