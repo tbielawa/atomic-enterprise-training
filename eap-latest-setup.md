@@ -289,6 +289,12 @@ master node (or you could choose to use a separate server).
 
 1. Install EPEL repo and then ansible
 
+    You may be able to skip this step as *Ansible may already be
+    available on your master*. We now ship Ansible packages in the
+    `rhel-7-server-*` subscriber channels. You can run a quick `yum
+    info ansible` to check. Here's how to enable EPEL if it is still
+    required for you:
+
     ```
     yum -y install http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
     sed -i -e "s/^enabled=1/enabled=0/" /etc/yum.repos.d/epel.repo
