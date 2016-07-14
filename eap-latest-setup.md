@@ -705,7 +705,7 @@ The assignments of "regions" and "zones" at the node-level are handled by labels
 on the nodes. You can look at how the labels were implemented by doing:
 
 
-    # oc get nodes
+    # oc get nodes --show-labels
     -----------------------------------------------------------------------------------------------------------------
     NAME                    STATUS    AGE      LABELS
     ae-master.example.com   Ready     1h       kubernetes.io/hostname=ae-master.example.com,region=infra,zone=default
@@ -1302,6 +1302,10 @@ Make sure you remember where you put this PEM file.
 
 ### Creating the Router
 
+The `openshift-ansible` playbooks automatically creates a router
+component for new installations. Manual router creation steps are
+still described below for reference.
+
 The router is the ingress point for all traffic destined for AE
 services. It currently supports only HTTP(S) traffic (and "any"
 TLS-enabled traffic via SNI). While it is called a "router", it is essentially a
@@ -1491,7 +1495,9 @@ Docker container is on the master. Log in there as `root`.
 We can use `oc exec` to get a bash interactive shell inside the running
 router container. The following command will do that for us:
 
-    oc exec -it -p $(oc get pods | grep router | awk '{print $1}' | head -n 1) /bin/bash
+    oc exec -it $(oc get pods | grep router | awk '{print $1}' | head -n 1) /bin/bash
+
+> **Note:** Earlier versions required a `-p` option before the `$()` subshell. Including `-p` in new releases will result in deprecation warning `W0714`
 
 You are now in a bash session *inside* the container running the router.
 
